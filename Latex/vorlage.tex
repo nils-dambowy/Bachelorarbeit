@@ -1,0 +1,100 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%   Zusaetzliche Pakete  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[ngerman, english]{babel}
+\usepackage{acronym}
+\usepackage{enumerate}  
+\usepackage{a4wide}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{palatino}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage[bookmarks]{hyperref}
+
+\usepackage[style=authoryear-comp,dashed=false,natbib=true,backend=bibtex,maxnames=2]{biblatex}
+\usepackage[justification=centering, labelfont=bf, textfont=bf]{caption}
+\usepackage[a4paper, margin=0cm, left=3cm, top=2.5cm, right=2cm, bottom=3.5cm]{geometry} 
+\usepackage{etoolbox}
+\usepackage{acronym}
+\usepackage{titlesec}
+\usepackage[titles]{tocloft}
+\usepackage{fontspec}
+
+\setlength\cftparskip{-2pt}
+\setlength\cftbeforesecskip{0pt}
+\setlength\cftaftertoctitleskip{0pt}
+
+\setmainfont{Times New Roman}
+
+\DeclareCaptionFormat{myformat}{\fontsize{10}{0}\selectfont#1#2#3}
+\captionsetup{format=myformat}
+
+\setlength\parindent{0pt}
+\setlength{\parskip}{6pt}
+\setlength{\headheight}{0.8cm}
+
+\linespread{1.25}
+
+%\setlength{\cftbeforesecskip}{1.75pt}
+
+\renewcommand{\cftfigpresnum}{Abbildung }
+\renewcommand{\cfttabpresnum}{Tabelle }
+
+\renewcommand{\cftfigaftersnum}{:}
+\renewcommand{\cfttabaftersnum}{:}
+
+\setlength{\cftfignumwidth}{2.75cm}
+\setlength{\cfttabnumwidth}{2cm}
+
+\setlength{\cftfigindent}{0cm}
+\setlength{\cfttabindent}{0cm}
+
+\renewcommand{\figurename}{Abbildung}
+\renewcommand{\tablename}{Tabelle}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  Definition des Deckblattes und der Titelseite  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\JMUTitle}[9]{
+
+  \thispagestyle{empty}
+  \vspace*{\stretch{1}}
+  {\parindent0cm
+  \rule{\linewidth}{.7ex}}
+  \begin{flushright}
+    \vspace*{\stretch{1}}
+    \bfseries\Huge
+    #1\\
+    \vspace*{\stretch{1}}
+    \bfseries\large
+    #4
+  \end{flushright}
+  \rule{\linewidth}{.7ex}
+
+  \vspace*{\stretch{1}}
+  \begin{center}
+    \includegraphics[width=2in]{GU-Logo-blau-gross} \\
+    \vspace*{\stretch{1}}
+    \Large #3 \\
+
+    \vspace*{\stretch{2}}
+   \large Institute for Informatics\\
+    \large Goethe University Frankfurt\\
+    \vspace*{\stretch{1}}
+    \large supervised by: \\ #8 \\ #9 \\[1mm]
+
+  \end{center}
+}
+
+\newcommand{\Zusammenfassung}[2]{
+    \section*{#1}
+    \addcontentsline{toc}{section}{#1}%
+    \markboth{#1}{#1}
+    \noindent
+    #2
+    \newpage
+}

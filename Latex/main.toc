@@ -1,0 +1,24 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem description}{3}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Thesis strucutre}{4}{subsection.1.2}%
+\contentsline {section}{\numberline {2}Corpus Nummorum and the D4N4}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Corpus Nummorum}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}D4N4}{6}{subsection.2.2}%
+\contentsline {section}{\numberline {3}Background}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Natural Language Processing}{7}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Named Entity Recognition}{7}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}Relationship Extraction}{8}{subsubsection.3.1.2}%
+\contentsline {subsection}{\numberline {3.2}Resource Description Framework}{9}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}RDFLib}{10}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}D2RQ}{11}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}D2R Mapping Language}{11}{subsubsection.3.4.1}%
+\contentsline {subsubsection}{\numberline {3.4.2}D2R Server}{11}{subsubsection.3.4.2}%
+\contentsline {section}{\numberline {4}Assignment and results}{13}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Current state of the pipeline}{13}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Implementation of the revised pipeline}{13}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Results}{13}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Comparison to the previous pipeline}{13}{subsection.4.4}%
+\contentsline {section}{\numberline {5}Conclusion and outlook}{14}{section.5}%
+\contentsline {section}{\numberline {6}List of figures}{15}{section.6}%
+\contentsline {section}{\numberline {7}Literature}{16}{section.7}%
