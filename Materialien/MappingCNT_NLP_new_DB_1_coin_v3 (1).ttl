@@ -1,0 +1,739 @@
+###
+### Version: Coins and Types
+### Authors: Sebastian Gampe und Karsten Tolle
+### 
+### only coins that are ReadyToPublish will be mapped --> see line: 65 - d2rq:condition "individualcoins.ReadyToPublish = 1";
+###
+
+@prefix meta: <http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/metadata#> .
+
+
+@prefix map: <#> .
+@prefix db: <> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix un: <http://www.w3.org/2005/Incubator/urw3/XGR-urw3-20080331/Uncertainty.owl> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix void: <http://rdfs.org/ns/void#/> .
+
+
+@prefix nm: <http://nomisma.org/id/> .
+@prefix nmo: <http://nomisma.org/ontology#> .
+@prefix cnt: <http://www.dbis.cs.uni-frankfurt.de/cnt/id/> .
+
+### need to enter the correct link to the database
+### and the right login credencials
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
+	d2rq:jdbcDSN "jdbc:mysql://localhost:3306/thrakien_d4n4_2";
+	d2rq:username "cnt";	
+	d2rq:password "rJnW6m7kZR"; ### need to fill your pw
+	jdbc:autoReconnect "true";
+	jdbc:zeroDateTimeBehavior "convertToNull";
+	.
+	
+	
+	
+<> a d2r:Server;
+  #rdfs:label "My D2R Server";
+    d2r:baseURI <http://localhost:2020/>;
+  #d2r:baseURI <https://www.corpus-nummorum.eu/>;
+  #d2r:port 2020;
+ # d2r:vocabularyIncludeInstances true;
+
+ ## default is 50 use 'false' to disable limit
+  d2r:limitPerPropertyBridge false; 
+  ## default is 50 use 'false' to disable limit
+  d2r:limitPerClassMap false;
+ 
+  d2r:sparqlTimeout 300;
+  d2r:pageTimeout 60;
+  .
+  
+# Conditions for one coin:
+# Coin 3941 connected with design 125 and 10  
+
+# 3 Coins	d2rq:condition "data_designs.id = 10 or data_designs.id = 125 or data_designs.id = 3397 or  data_designs.id = 5849 or data_designs.id = 4545 or data_designs.id = 6677";
+#	d2rq:condition "data_designs.id = 10 or data_designs.id = 125";
+
+# 3 Coins	d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125 or cnt_pipeline_url_id.design_id = 3397 or  cnt_pipeline_url_id.design_id = 5849 or cnt_pipeline_url_id.design_id = 4545 or cnt_pipeline_url_id.design_id = 6677";
+#	d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125";
+#	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125";
+#	d2rq:condition "cnt_pipeline_ner_url.design_id = 10 or cnt_pipeline_ner_url.design_id = 125";
+
+
+
+
+##########
+# Coins  
+##########
+map:Coins a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "https://www.corpus-nummorum.eu/CN_@@data_coins.id@@";
+	d2rq:class nmo:NumismaticObject;
+ 	d2rq:condition "data_coins.publication_state = 1";
+	# d2rq:condition "data_coins.id_mint = 8 or data_coins.id_mint = 25";
+	d2rq:condition "data_coins.id = 3941";
+	.
+ 
+ 
+ # All of facet nm:coin
+map:individualcoins_coin a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:Coins;
+	d2rq:property nmo:hasObjectType;
+	d2rq:uriPattern "http://nomisma.org/id/coin";
+	.
+	
+# identifier
+map:coin_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:Coins;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "coin_id=@@data_coins.id@@";
+	.
+ 
+
+######################
+#  Coins --> Obverse
+#
+#  changing the URI to: https://www.corpus-nummorum.eu/coins/@@data_coins.id@@#obverse
+#  results in warnings of D2R, see: https://sourceforge.net/p/d2rq-map/mailman/d2rq-map-devel/thread/3B1642C5-F032-419B-97EE-54AF88F0FA8A@cyganiak.de/
+#  for further details
+######################
+
+# creating nodes for the obverse (role concept #obverse)
+map:obverse_coin a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:uriPattern "https://www.corpus-nummorum.eu/CN_@@data_coins.id@@#obverse";
+    d2rq:condition "data_coins.publication_state = 1";
+	d2rq:condition "data_coins.id = 3941";
+	.
+												
+map:coin_obverse a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:Coins;
+	d2rq:property nmo:hasObverse;
+	d2rq:refersToClassMap map:obverse_coin;
+	.			
+
+
+######################
+#  Designs --> ObverseCoins
+######################	
+map:obv_design a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:obverse_coin;
+	d2rq:property nmo:hasAppearance;
+	d2rq:join "data_coins.id = d2r_coin_obv_design.id_coin";
+	d2rq:uriPattern "https://www.corpus-nummorum.eu/designs/@@d2r_coin_obv_design.id_design@@";
+	.	 
+ 
+
+
+######################
+#  Obverse --> Design (en) Literal
+######################	
+ map:obv_iconography_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:obverse_coin;
+	d2rq:property dcterms:description;
+	d2rq:join "data_coins.id = d2r_coin_obv_design.id_coin";
+	d2rq:column "d2r_coin_obv_design.design_en";
+	d2rq:lang "en";
+	.
+	
+######################
+#  Obverse --> Design (de) Literal
+######################	
+ map:obv_iconography_de a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:obverse_coin;
+	d2rq:property dcterms:description;
+	d2rq:join "data_coins.id = d2r_coin_obv_design.id_coin";
+	d2rq:column "d2r_coin_obv_design.design_de";
+	d2rq:lang "de";
+	.	
+
+
+
+
+######################
+#  Coins --> Reverse
+#  changing the URI to: https://www.corpus-nummorum.eu/coins/@@data_coins.id@@#reverse
+#  results in warnings of D2R, see: https://sourceforge.net/p/d2rq-map/mailman/d2rq-map-devel/thread/3B1642C5-F032-419B-97EE-54AF88F0FA8A@cyganiak.de/
+#  for further details
+######################
+# creating nodes for the reverse (role concept #reverse)
+map:reverse_coin a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:uriPattern "https://www.corpus-nummorum.eu/CN_@@data_coins.id@@#reverse";
+    d2rq:condition "data_coins.publication_state = 1";
+	d2rq:condition "data_coins.id = 3941";
+	.
+	
+
+map:coin_reverse a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:Coins;
+	d2rq:property nmo:hasReverse;
+	d2rq:refersToClassMap map:reverse_coin;
+	.			
+
+######################
+#  Designs --> ReverseCoins
+######################	
+map:rev_design a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reverse_coin;
+	d2rq:property nmo:hasAppearance;
+	d2rq:join "data_coins.id = d2r_coin_rev_design.id_coin";
+	d2rq:uriPattern "https://www.corpus-nummorum.eu/designs/@@d2r_coin_rev_design.id_design@@";
+	.	 
+ 
+	
+######################
+#  Reverse --> Design (en) Literal
+######################	
+ map:rev_iconography_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reverse_coin;
+	d2rq:property dcterms:description;
+	d2rq:join "data_coins.id = d2r_coin_rev_design.id_coin";
+	d2rq:column "d2r_coin_rev_design.design_en";
+	d2rq:lang "en";
+	.
+ 
+ 
+ ######################
+#  Reverse --> Design (de) Literal
+######################	
+ map:rev_iconography_de a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:reverse_coin;
+	d2rq:property dcterms:description;
+	d2rq:join "data_coins.id = d2r_coin_rev_design.id_coin";
+	d2rq:column "d2r_coin_rev_design.design_de";
+	d2rq:lang "de";
+	.
+	
+	
+	
+  
+##########
+# Designs  
+##########
+map:designs a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "https://data.corpus-nummorum.eu/api/designs/@@data_designs.id@@";
+	# d2rq:class nmo:Design; # does not exist!
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125";
+	.
+	
+# identifier
+map:design_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "design_id=@@data_designs.id@@";
+	.
+	
+# title	
+map:design_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:title;
+	d2rq:sqlExpression "CONCAT('CNT Design', data_designs.id)";
+	.	
+	
+# publisher	
+map:design_publisher a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:publisher;
+	d2rq:pattern "Corpus Nummorum Thracorum";
+	.
+	
+######################
+#  Designs --> Iconography DE
+######################	
+map:design_icongraphy_de a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:description;
+	d2rq:column "data_designs.design_de";
+	d2rq:lang "de"
+	.
+
+######################
+#  Designs --> Iconography EN
+######################	
+map:design_icongraphy_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:description;
+	d2rq:column "data_designs.design_en";
+	d2rq:lang "en"
+	.	
+	
+
+ 
+ 
+	
+######################
+#  NLP
+######################
+
+######################
+#  Designs --> nlp_bag
+######################	
+map:design_to_nlp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property nmo:hasIconography;
+	d2rq:refersToClassMap map:nlp_bag;
+	d2rq:join "data_designs.id = cnt_pipeline_url_id.design_id";
+	d2rq:join "cnt_pipeline_url_id.design_id = cnt_pipeline_url.design_id";
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125";
+	.
+	
+
+######################
+#  Design --> nlp_bag (blank node)
+######################
+# creating blank nodes for the bag of nlp words and labels over DesignIDs of cnt_pipeline_url_id table 
+map:nlp_bag a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_url_id.design_id";
+	d2rq:class rdf:Bag;
+	d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125";
+	.
+
+	
+######################
+#  Design --> nlp_entries (blank node)
+######################
+# creating a blank node for the entries of the nlp_bag
+map:nlp_entry a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_url.id";
+	d2rq:class rdf:Statement;
+	d2rq:condition "cnt_pipeline_url.design_id = 10 or cnt_pipeline_url.design_id = 125";
+	.
+	
+	
+######################
+#  nlp_bag --> Parts
+######################
+map:bag_first a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:nlp_entry;
+	d2rq:join "cnt_pipeline_url.design_id = cnt_pipeline_url_id.design_id";
+	d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125";
+	.
+
+	
+######################
+#  nlp_entry --> person as subject
+######################
+map:entry_subject-person a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:persons;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_person.link";
+	.
+
+######################
+#  nlp_entry --> animal as subject
+######################
+map:entry_subject-anm a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_animal.link";
+	.
+
+######################
+#  nlp_entry --> plant as subject
+######################
+map:entry_subject-plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_plant.link";
+	.
+
+######################
+#  nlp_entry --> object as object
+######################
+map:entry_object a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:objects;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_obj.link";
+	.
+
+
+######################
+#  nlp_entry --> animal as object
+######################
+map:entry_object-anm a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_animal.link";
+	.
+	
+	
+######################
+#  nlp_entry --> plant as object
+######################
+map:entry_object-plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_plant.link";
+	.	
+
+######################
+#  nlp_entry --> person as object
+######################
+map:entry_object-person a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:persons;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_person.link";
+	.	
+
+######################
+#  nlp_entry --> predicate
+######################
+map:entry_predicate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:predicate;
+	d2rq:refersToClassMap map:predicates;
+	d2rq:join "cnt_pipeline_url.relation_url = nlp_list_verb.link";
+	.	
+
+	
+# NER
+
+######################
+#  Designs --> nlp_bag_ner
+######################	
+map:design_to_nlp_ner a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property nmo:hasAppearance;
+	d2rq:refersToClassMap map:nlp_bag_ner;
+	d2rq:join "data_designs.id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url_id.design_id = cnt_pipeline_ner_url.design_id";
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125";
+	.
+	
+	
+######################
+#  Design --> nlp_bag ner (blank node)
+######################
+# creating blank nodes for the bag of nlp ner words and labels over DesignIDs of cnt_pipeline_url_ner_id table 
+map:nlp_bag_ner a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_ner_url_id.design_id";
+	d2rq:class rdf:Bag;
+	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125";
+	.	
+
+	
+######################
+#  Design --> nlp_entries ner (blank node)
+######################
+# creating a blank node for the entries of the nlp_bag ner
+#map:nlp_entry_ner a d2rq:ClassMap;
+#   d2rq:dataStorage map:database;
+#   d2rq:bNodeIdColumns "cnt_pipeline_ner_url.id";
+#	d2rq:class rdf:Statement;
+#	d2rq:condition "cnt_pipeline_ner_url.design_id = 10 or cnt_pipeline_ner_url.design_id = 125";
+#	.
+
+	
+	
+######################
+#  nlp_bag --> Parts ner
+######################
+#map:bag_first_ner a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:nlp_bag_ner;
+#	d2rq:property rdf:li;
+#	d2rq:refersToClassMap map:nlp_entry_ner;
+#	#d2rq:join "data_designs.id = cnt_pipeline_ner_url.design_id";
+#	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+#	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125";
+#	.
+
+	
+######################
+#  nlp_bag ner --> person
+######################
+map:bag_ner_subject a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag_ner;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:persons;
+	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_person.link";
+	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125"
+	.
+
+
+######################
+#  nlp_bag --> object
+######################
+map:bag_ner_object a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag_ner;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:objects;
+	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_obj.link";
+	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125"
+	.	
+
+	
+######################
+#  nlp_bag --> animal
+######################
+map:bag_ner_animal a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag_ner;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_animal.link";
+	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125"
+	.		
+	
+
+######################
+#  nlp_bag --> plant
+######################
+map:bag_ner_plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag_ner;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_plant.link";
+	d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125"
+	.		
+
+
+	
+# Class Links
+
+
+##########
+# Persons
+##########
+map:persons a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_person.link";
+	d2rq:condition "nlp_list_person.link != '' ";
+	d2rq:condition "nlp_list_person.ID = 4 or nlp_list_person.ID = 16 or nlp_list_person.ID = 312 or  nlp_list_person.ID = 28 or nlp_list_person.ID = 36 or nlp_list_person.ID = 47 or nlp_list_person.ID = 115";
+	.
+	
+# Links Persons to Classes	
+	
+##########
+# Persons classes based on view: nlp_person_to_classes_union
+##########	
+	
+map:persons_to_classes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:persons;
+	d2rq:property rdf:type;
+	# d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.ID = nlp_person_to_classes_union.id";
+	d2rq:uriColumn 	"nlp_person_to_classes_union.class_uri";
+	.	
+	
+
+# identifier
+map:subject_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:persons;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "subject_id=@@nlp_list_person.ID@@";
+	.
+
+# label
+map:subject_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:persons;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_person.name";
+	d2rq:datatype xsd:string;
+	.
+
+##########
+# Objects
+##########
+map:objects a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_obj.link";
+	#d2rq:class rdf:Object;
+	d2rq:condition "nlp_list_obj.link != '' ";
+	d2rq:condition "nlp_list_obj.ID = 143 or nlp_list_obj.ID = 131 or nlp_list_obj.ID = 207 or  nlp_list_obj.ID = 326 or nlp_list_obj.ID = 93 or nlp_list_obj.ID = 53 or nlp_list_obj.ID = 352 or nlp_list_obj.ID = 27 or nlp_list_obj.ID = 246";
+	.
+		
+##########
+# Objects classes based on view: nlp_object_to_classes_union
+##########	
+	
+map:objects_to_classes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	# d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.ID = nlp_object_to_classes_union.id";
+	d2rq:uriColumn 	"nlp_object_to_classes_union.class_uri";
+	.	
+	
+# identifier
+map:object_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_obj.ID@@";
+	.
+
+# label
+map:object_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_obj.name_en";
+	d2rq:datatype xsd:string;
+	.
+	
+##########
+# Predicates
+##########
+map:predicates a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_verb.link";
+	#d2rq:class rdf:Predicate;
+	d2rq:condition "nlp_list_verb.link != '' ";
+	d2rq:condition "nlp_list_verb.ID = 1 or nlp_list_verb.ID = 23";
+	.	
+	
+# SourceURL	
+#map:predicate_source a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:predicates;
+#	d2rq:property skos:exactMatch;
+#	d2rq:condition "nlp_list_verb.link != '' ";
+#	d2rq:uriColumn "nlp_list_verb.link";
+#	.
+
+# identifier
+map:predicate_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:predicates;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "predicate_id=@@nlp_list_verb.ID@@";
+	.
+
+# label
+map:predicate_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:predicates;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_verb.name_en";
+	d2rq:datatype xsd:string;
+	.
+
+##########
+# Plants
+##########
+map:plants a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_plant.link";
+	#d2rq:class rdf:Object;
+	d2rq:condition "nlp_list_plant.link != '' ";
+	d2rq:condition "nlp_list_plant.ID = 7";
+	.
+		
+##########
+# Plants classes based on view: nlp_plant_to_classes_union
+##########	
+	
+map:plants_to_classes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	# d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.ID = nlp_plant_to_classes_union.id";
+	d2rq:uriColumn 	"nlp_plant_to_classes_union.class_uri";
+	.	
+	
+# identifier
+map:plant_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_plant.ID@@";
+	.
+	
+# label
+map:plant_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_plant.name_en";
+	d2rq:datatype xsd:string;
+	.
+
+##########
+# Animals
+##########
+map:animals a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_animal.link";
+	#d2rq:class rdf:Object;
+	d2rq:condition "nlp_list_animal.link != '' ";
+	d2rq:condition "nlp_list_animal.ID = 23 or nlp_list_animal.ID = 44";
+	.
+
+##########
+# Animals classes based on view: nlp_animal_to_classes_union
+##########	
+	
+map:animals_to_classes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	# d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.ID = nlp_animal_to_classes_union.id";
+	d2rq:uriColumn 	"nlp_animal_to_classes_union.class_uri";
+	.			
+	
+# identifier
+map:animal_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_animal.ID@@";
+	.
+
+# label
+map:animal_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_animal.name_en";
+	d2rq:datatype xsd:string;
+	.
+	
+##########
+# Hierarchy
+##########
+
+### generate the classes
+
+map:classes a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	#d2rq:uriPattern "@@nlp_hierarchy.class@@";
+	d2rq:uriColumn "nlp_hierarchy.class_uri";
+	d2rq:class rdfs:Class;
+	.
+
+# label
+map:class_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_hierarchy.class";
+	d2rq:datatype xsd:string;
+	.
+
+## superclass
+
+## foaf:Person
+map:superclasses a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property rdfs:subClassOf;
+	#d2rq:condition "nlp_hierarchy.superclass = 'foaf:Person'";
+	d2rq:uriColumn "nlp_hierarchy.superclass_uri";
+	.
+	

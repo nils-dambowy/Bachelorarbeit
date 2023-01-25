@@ -1,0 +1,1666 @@
+###
+### Version: Coins and Types
+### Authors: Sebastian Gampe und Karsten Tolle
+### 
+### only coins that are ReadyToPublish will be mapped --> see line: 65 - d2rq:condition "individualcoins.ReadyToPublish = 1";
+###
+
+@prefix meta: <http://www4.wiwiss.fu-berlin.de/bizer/d2r-server/metadata#> .
+
+
+@prefix map: <#> .
+@prefix db: <> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix d2rq: <http://www.wiwiss.fu-berlin.de/suhl/bizer/D2RQ/0.1#> .
+@prefix d2r: <http://sites.wiwiss.fu-berlin.de/suhl/bizer/d2r-server/config.rdf#> .
+@prefix jdbc: <http://d2rq.org/terms/jdbc/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix un: <http://www.w3.org/2005/Incubator/urw3/XGR-urw3-20080331/Uncertainty.owl> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix void: <http://rdfs.org/ns/void#/> .
+
+
+@prefix nm: <http://nomisma.org/id/> .
+@prefix nmo: <http://nomisma.org/ontology#> .
+@prefix cnt: <http://www.dbis.cs.uni-frankfurt.de/cnt/id/> .
+
+### need to enter the correct link to the database
+### and the right login credencials
+
+map:database a d2rq:Database;
+	d2rq:jdbcDriver "com.mysql.jdbc.Driver";
+	d2rq:jdbcDSN "jdbc:mysql://localhost:3306/thrakien_d4n4_2";
+	d2rq:username "cnt";	
+	d2rq:password "rJnW6m7kZR"; ### need to fill your pw
+	jdbc:autoReconnect "true";
+	jdbc:zeroDateTimeBehavior "convertToNull";
+	.
+	
+	
+	
+<> a d2r:Server;
+  #rdfs:label "My D2R Server";
+    d2r:baseURI <http://localhost:2020/>;
+  #d2r:baseURI <https://www.corpus-nummorum.eu/>;
+  #d2r:port 2020;
+  #d2r:vocabularyIncludeInstances true;
+
+  ## default is 50 use 'false' to disable limit
+  d2r:limitPerPropertyBridge false; 
+  ## default is 50 use 'false' to disable limit
+  d2r:limitPerClassMap false;
+ 
+  d2r:sparqlTimeout 300;
+  d2r:pageTimeout 60;
+  .
+  
+  
+  
+##########
+# Coins  
+##########
+map:coins a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "https://www.corpus-nummorum.eu/coins/@@data_coins.id@@";
+	d2rq:class nmo:NumismaticObject;
+ 	d2rq:condition "data_coins.publication_state = 1";
+	#d2rq:condition "data_coins.id = 3941"
+	#d2rq:condition "data_coins.id = 3941 or data_coins.id = 27242 or data_coins.id = 28521";
+	.
+ 
+ 
+ # ausgewählt: 3941, 27242, 28521
+
+
+  
+######################
+#  Coins --> Designs obv
+######################										
+map:coin_design_obv a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:refersToClassMap map:coins;
+	d2rq:property dcterms:source;
+	d2rq:join "data_coins.id_design_o = data_designs.id";	
+	.	  
+
+######################
+#  Coins --> Designs rev
+######################										
+map:coin_design_rev a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:refersToClassMap map:coins;
+	d2rq:property dcterms:source;
+	d2rq:join "data_coins.id_design_r = data_designs.id";
+	.
+	
+######################
+#  Coins --> Die --> Designs obv
+######################										
+map:coin_die_design_obv a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:refersToClassMap map:coins;
+	d2rq:property dcterms:source;
+	d2rq:join "data_coins.id_die_o = data_dies.id";	
+	d2rq:join "data_dies.id_design = data_designs.id";
+	.	  
+
+######################
+#  Coins --> Die --> Designs rev
+######################										
+map:coin_die_design_rev a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:refersToClassMap map:coins;
+	d2rq:property dcterms:source;
+	d2rq:join "data_coins.id_die_r = data_dies.id";	
+	d2rq:join "data_dies.id_design = data_designs.id";
+	.	 
+	
+  
+##########
+# Designs  
+##########
+map:designs a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriPattern "https://www.corpus-nummorum.eu/designs/@@data_designs.id@@";
+	d2rq:class nmo:Design;
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125 or data_designs.id = 3397 or  data_designs.id = 5849 or data_designs.id = 4545 or data_designs.id = 6677";
+	.
+	
+# identifier
+map:design_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "design_id=@@data_designs.id@@";
+	.
+	
+# title	
+map:design_title a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:title;
+	d2rq:sqlExpression "CONCAT('CNT Design', data_designs.id)";
+	.	
+	
+# publisher	
+map:design_publisher a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:publisher;
+	d2rq:pattern "Corpus Nummorum Thracorum";
+	.
+	
+######################
+#  Designs --> Iconography DE
+######################	
+map:design_icongraphy_de a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:description;
+	d2rq:column "data_designs.design_de";
+	d2rq:lang "de"
+	.
+
+######################
+#  Designs --> Iconography EN
+######################	
+map:design_icongraphy_en a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:description;
+	d2rq:column "data_designs.design_en";
+	d2rq:lang "en"
+	.	
+	
+######################
+#  Designs --> Keywords EN
+######################	
+#map:design_kewords_en a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:designs;
+#	d2rq:property dcterms:description;
+#	d2rq:column "designs.KeywordsEng";
+#	d2rq:lang "en"
+#	.	
+
+######################
+#  Designs --> Face Obverse
+######################	
+map:design_face_obv a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property nmo:hasFace;
+	d2rq:condition "data_designs.side = 0 ";
+	d2rq:pattern "Obverse";
+	.	
+	
+######################
+#  Designs --> Face Reverse
+######################	
+map:design_face_rev a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property nmo:hasFace;
+	d2rq:condition "data_designs.side = 1 ";
+	d2rq:pattern "Reverse";
+	.		
+	
+######################
+#  Designs --> Mint
+######################										
+#map:design_mint a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:designs;
+#	d2rq:property nmo:hasMint;
+#	d2rq:condition "data_designs.side != '' ";
+#	d2rq:column "designs.City";
+#	.
+
+######################
+#  Designs --> Border of dots
+######################	
+map:design_bod a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:description;
+	d2rq:condition "data_designs.border_of_dots = 1 ";
+	d2rq:pattern "Border of Dots";
+	.	
+	
+#  Designs --> Literatur
+#map:design_lit a d2rq:PropertyBridge;
+#   d2rq:belongsToClassMap map:designs;
+#   d2rq:property dcterms:relation;
+#    d2rq:column "designs.Reference";
+#   . 
+	
+######################
+#  NLP
+######################
+
+######################
+#  Designs --> nlp_bag
+######################	
+map:design_to_nlp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:hasPart;
+	d2rq:refersToClassMap map:nlp_bag;
+	d2rq:join "data_designs.id = cnt_pipeline_url_id.design_id";
+	d2rq:join "cnt_pipeline_url_id.design_id = cnt_pipeline_url.design_id";
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125 or data_designs.id = 3397 or  data_designs.id = 5849 or data_designs.id = 4545 or data_designs.id = 6677";
+	.
+	
+
+######################
+#  Design --> nlp_bag (blank node)
+######################
+# creating blank nodes for the bag of nlp words and labels over DesignIDs of cnt_pipeline_url_id table 
+map:nlp_bag a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_url_id.design_id";
+	d2rq:class rdf:Bag;
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125 or cnt_pipeline_url_id.design_id = 3397 or  cnt_pipeline_url_id.design_id = 5849 or cnt_pipeline_url_id.design_id = 4545 or cnt_pipeline_url_id.design_id = 6677";
+	.
+
+	
+######################
+#  Design --> nlp_entries (blank node)
+######################
+# creating a blank node for the entries of the nlp_bag
+map:nlp_entry a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_url.id";
+	d2rq:class rdf:Statement;
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_url.design_id = 10 or cnt_pipeline_url.design_id = 125 or cnt_pipeline_url.design_id = 3397 or  cnt_pipeline_url.design_id = 5849 or cnt_pipeline_url.design_id = 4545 or cnt_pipeline_url.design_id = 6677";
+	.
+	
+	
+######################
+#  nlp_bag --> Parts
+######################
+map:bag_first a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:nlp_entry;
+	d2rq:join "cnt_pipeline_url.design_id = cnt_pipeline_url_id.design_id";
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_url_id.design_id = 10 or cnt_pipeline_url_id.design_id = 125 or cnt_pipeline_url_id.design_id = 3397 or  cnt_pipeline_url_id.design_id = 5849 or cnt_pipeline_url_id.design_id = 4545 or cnt_pipeline_url_id.design_id = 6677";
+	.
+
+	
+######################
+#  nlp_entry --> person as subject
+######################
+map:entry_subject-person a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:subjects;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_person.link";
+	.
+
+######################
+#  nlp_entry --> animal as subject
+######################
+map:entry_subject-anm a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_animal.link";
+	.
+
+######################
+#  nlp_entry --> plant as subject
+######################
+map:entry_subject-plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_url.subject_url = nlp_list_plant.link";
+	.
+
+######################
+#  nlp_entry --> object as object
+######################
+map:entry_object a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:objects;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_obj.link";
+	.
+
+
+######################
+#  nlp_entry --> animal as object
+######################
+map:entry_object-anm a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_animal.link";
+	.
+	
+	
+######################
+#  nlp_entry --> plant as object
+######################
+map:entry_object-plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_plant.link";
+	.	
+
+######################
+#  nlp_entry --> person as object
+######################
+map:entry_object-person a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:subjects;
+	d2rq:join "cnt_pipeline_url.object_url = nlp_list_person.link";
+	.	
+
+######################
+#  nlp_entry --> predicate
+######################
+map:entry_predicate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry;
+	d2rq:property rdf:predicate;
+	d2rq:refersToClassMap map:predicates;
+	d2rq:join "cnt_pipeline_url.relation_url = nlp_list_verb.link";
+	.	
+
+	
+# NER
+
+######################
+#  Designs --> nlp_bag_ner
+######################	
+map:design_to_nlp_ner a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:designs;
+	d2rq:property dcterms:hasPart;
+	d2rq:refersToClassMap map:nlp_bag_ner;
+	d2rq:join "data_designs.id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:join "cnt_pipeline_ner_url_id.design_id = cnt_pipeline_ner_url.design_id";
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "data_designs.id = 10 or data_designs.id = 125 or data_designs.id = 3397 or  data_designs.id = 5849 or data_designs.id = 4545 or data_designs.id = 6677";
+	.
+	
+	
+######################
+#  Design --> nlp_bag ner (blank node)
+######################
+# creating blank nodes for the bag of nlp ner words and labels over DesignIDs of cnt_pipeline_url_ner_id table 
+map:nlp_bag_ner a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_ner_url_id.design_id";
+	d2rq:class rdf:Bag;
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125 or cnt_pipeline_ner_url_id.design_id = 3397 or  cnt_pipeline_ner_url_id.design_id = 5849 or cnt_pipeline_ner_url_id.design_id = 4545 or cnt_pipeline_ner_url_id.design_id= 6677";
+	.	
+
+	
+######################
+#  Design --> nlp_entries ner (blank node)
+######################
+# creating a blank node for the entries of the nlp_bag ner
+map:nlp_entry_ner a d2rq:ClassMap;
+    d2rq:dataStorage map:database;
+    d2rq:bNodeIdColumns "cnt_pipeline_ner_url.id";
+	d2rq:class rdf:Statement;
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_ner_url.design_id = 10 or cnt_pipeline_ner_url.design_id = 125 or cnt_pipeline_ner_url.design_id = 3397 or  cnt_pipeline_ner_url.design_id = 5849 or cnt_pipeline_ner_url.design_id = 4545 or cnt_pipeline_ner_url.design_id= 6677";
+	.
+
+	
+######################
+#  nlp_bag --> Parts ner
+######################
+map:bag_first_ner a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_bag_ner;
+	d2rq:property rdf:li;
+	d2rq:refersToClassMap map:nlp_entry_ner;
+	#d2rq:join "data_designs.id = cnt_pipeline_ner_url.design_id";
+	d2rq:join "cnt_pipeline_ner_url.design_id = cnt_pipeline_ner_url_id.design_id";
+	d2rq:condition "data_designs.id = 10 or data_designs.id = 125"
+	#d2rq:condition "cnt_pipeline_ner_url_id.design_id = 10 or cnt_pipeline_ner_url_id.design_id = 125 or cnt_pipeline_ner_url_id.design_id = 3397 or  cnt_pipeline_ner_url_id.design_id = 5849 or cnt_pipeline_ner_url_id.design_id = 4545 or cnt_pipeline_ner_url_id.design_id= 6677";
+	.
+
+	
+######################
+#  nlp_entry ner --> subject
+######################
+map:entry_ner_subject a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry_ner;
+	d2rq:property rdf:subject;
+	d2rq:refersToClassMap map:subjects;
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_person.link";
+	.
+
+
+######################
+#  nlp_entry --> object
+######################
+map:entry_ner_object a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry_ner;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:objects;
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_obj.link";
+	.	
+
+	
+######################
+#  nlp_entry --> animal
+######################
+map:entry_ner_animal a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry_ner;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:animals;
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_animal.link";
+	.		
+	
+
+######################
+#  nlp_entry --> plant
+######################
+map:entry_ner_plant a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:nlp_entry_ner;
+	d2rq:property rdf:object;
+	d2rq:refersToClassMap map:plants;
+	d2rq:join "cnt_pipeline_ner_url.entity_url = nlp_list_plant.link";
+	.		
+
+
+	
+# Class Links
+
+
+##########
+# Subjects
+##########
+map:subjects a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_person.link";
+	#d2rq:class rdf:Subject;
+	d2rq:condition "nlp_list_person.link != '' ";
+	#d2rq:condition "nlp_list_person.ID = 4 or nlp_list_person.ID = 16"
+	#d2rq:condition "nlp_list_person.ID = 4 or nlp_list_person.ID = 16 or nlp_list_person.ID = 312 or  nlp_list_person.ID = 28 or nlp_list_person.ID = 36 or nlp_list_person.ID = 47 or nlp_list_person.ID = 115";
+	.
+	
+# SourceURL	
+#map:subject_source a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:subjects;
+#	d2rq:property skos:exactMatch;
+#	d2rq:condition "nlp_list_person.link != '' ";
+#	d2rq:uriColumn "nlp_list_person.link";
+#	.
+
+# identifier
+map:subject_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "subject_id=@@nlp_list_person.ID@@";
+	.
+	
+# label
+map:subject_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_person.name";
+	d2rq:datatype xsd:string;
+	.
+
+##########
+# Objects
+##########
+map:objects a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_obj.link";
+	#d2rq:class rdf:Object;
+	d2rq:condition "nlp_list_obj.link != '' ";
+	d2rq:condition "nlp_list_obj.ID = 143 or nlp_list_obj.ID = 131"
+	#d2rq:condition "nlp_list_obj.ID = 143 or nlp_list_obj.ID = 131 or nlp_list_obj.ID = 207 or  nlp_list_obj.ID = 326 or nlp_list_obj.ID = 93 or nlp_list_obj.ID = 53 or nlp_list_obj.ID = 352 or nlp_list_obj.ID = 27 or nlp_list_obj.ID = 246";
+	.
+		
+# SourceURL	
+#map:object_source a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:objects;
+#	d2rq:property skos:exactMatch;
+#	d2rq:condition "nlp_list_obj.link != '' ";
+#	d2rq:uriColumn "nlp_list_obj.link";
+#	.
+	
+# identifier
+map:object_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_obj.ID@@";
+	.
+	
+# label
+map:object_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_obj.name_en";
+	d2rq:datatype xsd:string;
+	.
+	
+##########
+# Predicates
+##########
+map:predicates a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_verb.link";
+	#d2rq:class rdf:Predicate;
+	#d2rq:condition "nlp_list_verb.link != '' ";
+	d2rq:condition "nlp_list_verb.ID = 1 or nlp_list_verb.ID = 23";
+	.	
+	
+# SourceURL	
+#map:predicate_source a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:predicates;
+#	d2rq:property skos:exactMatch;
+#	d2rq:condition "nlp_list_verb.link != '' ";
+#	d2rq:uriColumn "nlp_list_verb.link";
+#	.
+
+# identifier
+map:predicate_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:predicates;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "predicate_id=@@nlp_list_verb.ID@@";
+	.
+
+# label
+map:predicate_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:predicates;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_verb.name_en";
+	d2rq:datatype xsd:string;
+	.
+
+
+##########
+# Plants
+##########
+map:plants a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_plant.link";
+	#d2rq:class rdf:Object;
+	d2rq:condition "nlp_list_plant.link != '' ";
+	#d2rq:condition "nlp_list_plant.ID = 7";
+	.
+		
+	
+# identifier
+map:plant_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_plant.ID@@";
+	.
+	
+# label
+map:plant_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_plant.name_en";
+	d2rq:datatype xsd:string;
+	.
+
+##########
+# Animals
+##########
+map:animals a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	d2rq:uriColumn "nlp_list_animal.link";
+	#d2rq:class rdf:Object;
+	#d2rq:condition "nlp_list_animal.link != '' ";
+	d2rq:condition "nlp_list_animal.ID = 23 or nlp_list_animal.ID = 44";
+	.
+		
+	
+# identifier
+map:animal_identifier a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property dcterms:identifier;
+	d2rq:pattern "object_id=@@nlp_list_animal.ID@@";
+	.
+	
+# label
+map:animal_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_list_animal.name_en";
+	d2rq:datatype xsd:string;
+	.
+
+	
+##########
+# Hierarchy
+##########
+
+### generate the classes
+
+map:classes a d2rq:ClassMap;
+	d2rq:dataStorage map:database;
+	#d2rq:uriPattern "@@nlp_hierarchy.class@@";
+	d2rq:uriColumn "nlp_hierarchy.class_uri";
+	d2rq:class rdfs:Class;
+	.
+
+# label
+map:class_label a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property skos:prefLabel;
+	d2rq:column "nlp_hierarchy.class";
+	d2rq:datatype xsd:string;
+	.
+
+## superclass
+
+## foaf:Person
+map:superclasses a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:classes;
+	d2rq:property rdfs:subClassOf;
+	#d2rq:condition "nlp_hierarchy.superclass = 'foaf:Person'";
+	d2rq:uriColumn "nlp_hierarchy.superclass_uri";
+	.
+
+## foaf:Person
+#map:foafPerson a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:classes;
+#	d2rq:property rdfs:subClassOf;
+#	d2rq:condition "nlp_hierarchy.superclass = 'foaf:Person'";
+#	d2rq:constantValue <http://xmlns.com/foaf/0.1/Person>;
+#	.
+	
+## cnt:Object
+#map:cntObject a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:classes;
+#	d2rq:property rdfs:subClassOf;
+#	d2rq:condition "nlp_hierarchy.superclass = 'cnt:Object'";
+#	d2rq:constantValue <http://www.dbis.cs.uni-frankfurt.de/cnt/id/Object>;
+#	.
+
+## cnt:Relation
+#map:cntRelation a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:classes;
+#	d2rq:property rdfs:subClassOf;
+#	d2rq:condition "nlp_hierarchy.superclass = 'cnt:Relation'";
+#	d2rq:constantValue <http://www.dbis.cs.uni-frankfurt.de/cnt/id/Relation>;
+#	.	
+	
+## other
+#map:other a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:classes;
+#	d2rq:property rdfs:subClassOf;
+#	d2rq:condition "nlp_hierarchy.superclass <> 'foaf:Person'";
+#	d2rq:condition "nlp_hierarchy.superclass <> 'cnt:Object'";
+#	d2rq:condition "nlp_hierarchy.superclass <> 'cnt:Relation'";
+#	d2rq:uriPattern "http://localhost:2020/resource/@@nlp_hierarchy.superclass@@";
+#	.	
+
+	
+# Links Subjects to Classes	
+	
+##########
+# Persons
+##########	
+	
+# Subjects --> Male
+map:subjects_to_males a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_I = 'Male' ";	
+	.	
+	
+# Subjects --> Female
+map:subjects_to_females a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_I = 'Female' ";	
+	.	
+
+# Subjects --> Egyptian
+map:subjects_to_egyptian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Egyptian' ";	
+	.	
+	
+# Subjects --> Greek
+map:subjects_to_greek a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Greek' ";	
+	.	
+	
+# Subjects --> Roman
+map:subjects_to_roman a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Roman' ";	
+	.	
+	
+# Subjects --> Greek-Roman
+map:subjects_to_greek-roman a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Greek-Roman' ";	
+	.	
+
+# Subjects --> CivicInstitutions
+map:subjects_to_civic a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_II = 'CivicInstitutions' ";	
+	.
+	
+# Subjects --> Deities
+map:subjects_to_deities a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_II = 'Deities' ";	
+	.		
+
+# Subjects --> Olympic
+map:subjects_to_olympic a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Olympic' ";	
+	.		
+	
+# Subjects --> Olympic_2
+map:subjects_to_olympic_2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_V = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_V = 'Olympic' ";	
+	.		
+	
+# Subjects --> Other
+map:subjects_to_other a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Other' ";	
+	.		
+	
+# Subjects --> Personification
+map:subjects_to_personification a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Personification' ";	
+	.		
+	
+# Subjects --> RiverGod
+map:subjects_to_rivergod a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'RiverGod' ";	
+	.		
+	
+# Subjects --> Underworld
+map:subjects_to_underworld a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Underworld' ";	
+	.		
+
+# Subjects --> Heroes
+map:subjects_to_heroes a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_II = 'Heroes' ";	
+	.		
+	
+# Subjects --> CityFounder
+map:subjects_to_cityfounder a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'CityFounder' ";	
+	.		
+	
+# Subjects --> CityFounder_2
+map:subjects_to_cityfounder_2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'CityFounder' ";	
+	.	
+	
+# Subjects --> Human
+map:subjects_to_human a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_II = 'Human' ";	
+	.		
+	
+# Subjects --> Emperor
+map:subjects_to_emperor a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Emperor' ";	
+	.	
+	
+# Subjects --> Julio-ClaudianDynasty
+map:subjects_to_julio-claudian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Julio-ClaudianDynasty' ";	
+	.		
+
+# Subjects --> FlavianDynasty
+map:subjects_to_flavian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'FlavianDynasty' ";	
+	.	
+
+# Subjects --> AdoptiveEmperors
+map:subjects_to_adoptive a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'AdoptiveEmperors' ";	
+	.	
+
+# Subjects --> AntonineDynasty
+map:subjects_to_antonine a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'AntonineDynasty' ";	
+	.	
+	
+# Subjects --> SeveranDynasty
+map:subjects_to_severan a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'SeveranDynasty' ";	
+	.	
+	
+# Subjects --> BarracksEmperors
+map:subjects_to_barracks a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'BarracksEmperors' ";	
+	.	
+	
+# Subjects --> GordianDynasty
+map:subjects_to_gordian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_V = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_V = 'GordianDynasty' ";	
+	.	
+	
+# Subjects --> EmperorsFamily
+map:subjects_to_emperorsfamily a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'EmperorsFamily' ";	
+	.	
+	
+# Subjects --> General
+map:subjects_to_general a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'General' ";	
+	.	
+	
+# Subjects --> King
+map:subjects_to_king a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'King' ";	
+	.	
+	
+# Subjects --> CanianDynasty
+map:subjects_to_canian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'CanianDynasty' ";	
+	.	
+	
+# Subjects --> OdrysianDynasty
+map:subjects_to_odrysian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'OdrysianDynasty' ";	
+	.		
+	
+# Subjects --> SapeianDynasty
+map:subjects_to_sapeian a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'SapeianDynasty' ";	
+	.	
+	
+# Subjects --> Hellenistic
+map:subjects_to_hellenistic a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Hellenistic' ";	
+	.		
+
+# Subjects --> ArgeadDynasty
+map:subjects_to_argead a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'ArgeadDynasty' ";	
+	.	
+
+# Subjects --> ArgeadDynasty_2
+map:subjects_to_argead_2 a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_V = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_V = 'ArgeadDynasty' ";	
+	.	
+
+# Subjects --> Ptolemies
+map:subjects_to_ptolemies a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_V = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_V = 'Ptolemies' ";	
+	.	
+
+# Subjects --> Seleucides
+map:subjects_to_seleucides a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_V = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_V = 'Seleucides' ";	
+	.	
+
+# Subjects --> Usurper
+map:subjects_to_usurper a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Usurper' ";	
+	.		
+	
+# Subjects --> MythologicalFigures
+map:subjects_to_mythfig a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_II = 'MythologicalFigures' ";	
+	.	
+
+# Subjects --> Barbarian
+map:subjects_to_barb a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_III = 'Barbarian' ";	
+	.		
+
+# Subjects --> ConstantinianDynasty
+map:subjects_to_constdyn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'ConstantinianDynasty' ";
+	.
+	
+# Subjects --> Tetrarchy
+map:subjects_to_tetrarchy a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'Tetrarchy' ";
+	.
+	
+# Subjects --> TheodosianDynasty
+map:subjects_to_theodyn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'TheodosianDynasty' ";
+	.
+
+# Subjects --> ValentinianDynasty
+map:subjects_to_valdyn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'ValentinianDynasty' ";
+	.
+	
+# Subjects --> YearofFourEmperors
+map:subjects_to_yearfour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'YearofFourEmperors' ";
+	.
+
+# Subjects --> LeonidDynasty
+map:subjects_to_leodyn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:subjects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_person.Cat_IV = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_person.Cat_IV = 'LeonidDynasty' ";
+	.
+	
+##########
+# Objects
+##########
+	
+# Objects --> Architecture
+map:objects_to_archticture a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Architecture' ";	
+	.	
+
+# Objects --> ArchitecturalElements
+map:objects_to_archelement a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'ArchitecturalElements' ";	
+	.		
+	
+# Objects --> ArchitecturalOrnaments
+map:objects_to_archornament a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_III = 'ArchitecturalOrnaments' ";	
+	.	
+	
+# Objects --> Gate
+map:objects_to_gate a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Gate' ";	
+	.	
+	
+# Objects --> Mural
+map:objects_to_mural a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Mural' ";	
+	.	
+	
+# Objects --> Arms
+map:objects_to_arms a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Arms' ";	
+	.	
+
+# Objects --> Ax
+map:objects_to_ax a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Ax' ";	
+	.	
+	
+# Objects --> Astrological
+map:objects_to_astrological a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Astrological' ";	
+	.	
+	
+# Objects --> Bar
+map:objects_to_bar a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Bar' ";	
+	.	
+	
+# Objects --> BodyParts
+map:objects_to_bodyparts a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'BodyParts' ";	
+	.	
+	
+# Objects --> Head
+map:objects_to_head a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Head' ";	
+	.	
+	
+# Objects --> Clothing
+map:objects_to_clothing a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Clothing' ";	
+	.	
+	
+# Objects --> Armour
+map:objects_to_armour a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Armour' ";	
+	.	
+	
+# Objects --> Headdress
+map:objects_to_headdress a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Headdress' ";	
+	.	
+	
+# Objects --> Wreath
+map:objects_to_wreath a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_III = 'Wreath' ";	
+	.	
+	
+# Objects --> GameObjects
+map:objects_to_gameobjects a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'GameObjects' ";	
+	.
+	
+# Objects --> Interieur-Furniture
+map:objects_to_intfurn a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Interieur-Furniture' ";	
+	.
+	
+# Objects --> Metal
+map:objects_to_metal a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Metal' ";	
+	.
+	
+# Objects --> MusicalInstruments
+map:objects_to_musicalinstruments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'MusicalInstruments' ";	
+	.
+	
+# Objects --> NauticalObject
+map:objects_to_nauticalobject a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'NauticalObject' ";	
+	.
+	
+# Objects --> Ship
+map:objects_to_ship a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Ship' ";	
+	.
+	
+# Objects --> ShipPart
+map:objects_to_shippart a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_III = 'ShipPart' ";	
+	.
+	
+# Objects --> ShipType
+map:objects_to_shiptype a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_III = 'ShipType' ";	
+	.
+	
+# Objects --> Ornaments
+map:objects_to_ornaments a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Ornaments' ";	
+	.
+	
+# Objects --> Crown
+map:objects_to_crown a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Crown' ";	
+	.
+	
+# Objects --> Jewellery
+map:objects_to_jewellery a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Jewellery' ";	
+	.
+	
+# Objects --> Statues
+map:objects_to_statues a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Statues' ";	
+	.
+	
+# Objects --> Stone
+map:objects_to_stone a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Stone' ";	
+	.
+	
+# Objects --> Tools
+map:objects_to_tools a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Tools' ";	
+	.
+	
+# Objects --> AnimalRestraints
+map:objects_to_animalrestraints a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'AnimalRestraints' ";	
+	.
+	
+# Objects --> Harness
+map:objects_to_harness a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_III = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_III = 'Harness' ";	
+	.
+	
+# Objects --> Staff
+map:objects_to_staff a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_II = 'Staff' ";	
+	.
+	
+# Objects --> VehicelObjects
+map:objects_to_vehicelobjects a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'VehicelObjects' ";	
+	.
+
+# Objects --> Vessel-Jar
+map:objects_to_vesseljar a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'Vessel-Jar' ";	
+	.	
+
+# Objects --> SacrificialImplements
+map:objects_to_sacimp a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:objects;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_obj.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_obj.Cat_I = 'SacrificialImplements' ";	
+	.	
+	
+##########
+# Relations
+##########
+
+# Predicates --> PersonToObject
+#map:predicates_to_persontoobject a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:predicates;
+#	d2rq:property rdf:type;
+#	d2rq:refersToClassMap map:classes;
+#	d2rq:join "nlp_list_relations.Cat_I = nlp_hierarchy.class";
+#	d2rq:condition "nlp_list_relations.Cat_I = 'PersonToObject' ";	
+#	.	
+	
+# Predicates --> PersonToPerson
+#map:predicates_to_persontoperson a d2rq:PropertyBridge;
+#	d2rq:belongsToClassMap map:predicates;
+#	d2rq:property rdf:type;
+#	d2rq:refersToClassMap map:classes;
+#	d2rq:join "nlp_list_relations.Cat_II = nlp_hierarchy.class";
+#	d2rq:condition "nlp_list_relations.Cat_II = 'PersonToPerson' ";	
+#	.
+
+##########
+# Plants
+##########
+
+# Plants --> Herb
+map:plants_to_herb a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Herb' ";	
+	.	
+	
+# Plants --> Leaves
+map:plants_to_leaves a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Leaves' ";	
+	.	
+
+# Plants --> Tree
+map:plants_to_tree a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Tree' ";	
+	.	
+	
+# Plants --> Bush
+map:plants_to_bush a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Bush' ";	
+	.	
+
+# Plants --> Grass
+map:plants_to_grass a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Grass' ";	
+	.	
+
+# Plants --> Fruit
+map:plants_to_fruit a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Fruit' ";	
+	.	
+	
+# Plants --> Cereal-Grain
+map:plants_to_cereal-grain a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Cereal-Grain' ";	
+	.	
+	
+# Plants --> Flower
+map:plants_to_flower a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Flower' ";	
+	.	
+	
+# Plants --> Branches
+map:plants_to_branches a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_plant.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_plant.Cat_I = 'Branches' ";	
+	.	
+	
+##########
+# Animals
+##########
+
+# Animals --> Shellfish
+map:animals_to_shellfish a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Shellfish' ";	
+	.	
+	
+# Animals --> Insect
+map:animals_to_insect a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Insect' ";	
+	.	
+	
+# Animals --> Reptile
+map:animals_to_reptile a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Reptile' ";	
+	.	
+
+# Animals --> Mammal
+map:animals_to_mammal a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Mammal' ";	
+	.	
+	
+# Animals --> Mammal-Fish
+map:animals_to_mammal-fish a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Mammal-Fish' ";	
+	.	
+	
+# Animals --> Molusca
+map:animals_to_molusca a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Molusca' ";	
+	.	
+	
+# Animals --> Fish
+map:animals_to_fish a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Fish' ";	
+	.	
+	
+# Animals --> Bird
+map:animals_to_bird a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Bird' ";	
+	.	
+	
+# Animals --> Worm
+map:animals_to_worm a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_I = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_I = 'Worm' ";	
+	.	
+	
+
+##########
+# Animals & Plants Cat_II CLasses 
+##########
+
+
+#Animals --> MythicalCreature
+map:animals_to_mythicalcreature a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_II = 'MythicalCreature' ";	
+	.	
+	
+#Animals --> Shell
+map:animals_to_shell a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:animals;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_II = 'Shell' ";	
+	.	
+
+
+
+#Plants --> PlantsParts
+map:animals_to_plantsparts a d2rq:PropertyBridge;
+	d2rq:belongsToClassMap map:plants;
+	d2rq:property rdf:type;
+	d2rq:refersToClassMap map:classes;
+	d2rq:join "nlp_list_animal.Cat_II = nlp_hierarchy.class";
+	d2rq:condition "nlp_list_animal.Cat_II = 'PlantsParts' ";	
+	.	
