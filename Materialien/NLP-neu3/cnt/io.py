@@ -43,6 +43,7 @@ class Database_Connection():
     def load_design_with_id(self, table_name, coin_arr, column_list):
         """
         input:  table_name: Name of the mysql table
+                coin arr: list if coin ids
                 column_list: A list containing all columns for the query, example: [ID, Name]
 
         return: pandas dataframe
