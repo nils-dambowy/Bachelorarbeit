@@ -1,0 +1,545 @@
+@prefix ns1: <http://purl.org/dc/terms/> .
+@prefix ns2: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ns3: <http://nomisma.org/ontology#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ns3:NumismaticObject a rdfs:Class .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/bar_object> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Bar"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/caniandynasty_person> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q116> ;
+    ns2:prefLabel "CanianDynasty"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/civicinstitutions_person> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "CivicInstitutions"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/gameobjects_object> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "GameObjects"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/greek-roman_person> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Greek-Roman"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/leoniddynasty_person> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "LeonidDynasty"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/mammal-fish_animal> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Mammal-Fish"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/ocre_object_object> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Ocre_object"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/ocre_subject_subject> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Ocre_subject"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/other_subject> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q178885> ;
+    ns2:prefLabel "Other"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/persontoperson_relation> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q930933> ;
+    ns2:prefLabel "PersonToPerson"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/sapeiandynasty_person> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q116> ;
+    ns2:prefLabel "SapeianDynasty"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/idpersontoobject_relation> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q930933> ;
+    ns2:prefLabel "PersonToObject"^^xsd:string .
+
+rdf:Bag a rdfs:Class .
+
+rdf:Statement a rdfs:Class .
+
+rdfs:Class a rdfs:Class .
+
+<https://www.wikidata.org/wiki/Q101609> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q178885> ;
+    ns2:prefLabel "Olympic"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q10811> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Reptile"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q10884> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Tree"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q10948083> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "EmperorsFamily"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q10971443> a rdfs:Class,
+        <https://www.wikidata.org/wiki/Q39546> ;
+    ns1:identifier "object_id=131" ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39546> ;
+    ns2:prefLabel "Staff"^^xsd:string,
+        "staff"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q110418817> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "AdoptiveEmperors"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q111254017> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q357003> ;
+    ns2:prefLabel "Harness"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q111475275> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "SacrificialImplements"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1136723> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "Usurper"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q11426> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Metal"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q11446> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q20820043> ;
+    ns2:prefLabel "Ship"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q11460> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Clothing"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q116> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "King"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q11772> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Greek"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q12117> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Cereal-Grain"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q12271> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Architecture"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q129167> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "BarracksEmperors"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q131976> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q428995> ;
+    ns2:prefLabel "Ptolemies"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1324480> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "ValentinianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q134313> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "Barbarian"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1364> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Fruit"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1390> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Insect"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q14127146> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q28972621> ;
+    ns2:prefLabel "Wreath"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1434313> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q178885> ;
+    ns2:prefLabel "RiverGod"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q14745> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Interieur-Furniture"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q152> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Fish"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q1521549> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q178885> ;
+    ns2:prefLabel "Underworld"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q15688633> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q11446> ;
+    ns2:prefLabel "ShipPart"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q161439> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q18358253> ;
+    ns2:prefLabel "Jewellery"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q162244> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Heroes"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q16457828> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "BodyParts"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q170984> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q18358253> ;
+    ns2:prefLabel "Crown"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q174450> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "Tetrarchy"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q175454> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "ConstantinianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q178885> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Deities"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q179700> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Statues"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q18358253> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Ornaments"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q192841> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "Julio-ClaudianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q20011319> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "PlantsParts"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q200565> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "FlavianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q202311> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Egyptian"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q207123> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Herb"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q207174> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q178885> ;
+    ns2:prefLabel "Personification"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q20793164> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q11460> ;
+    ns2:prefLabel "Armour"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q20820043> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "NauticalObject"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q213096> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q6501235> ;
+    ns2:prefLabel "Shell"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q219423> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q12271> ;
+    ns2:prefLabel "Mural"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q2235308> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q11446> ;
+    ns2:prefLabel "ShipType"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q2239243> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "MythicalCreature"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q22731> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Stone"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q2277> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Roman"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q23640> a rdfs:Class,
+        <https://www.wikidata.org/wiki/Q16457828> ;
+    ns1:identifier "object_id=246" ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q16457828> ;
+    ns2:prefLabel "Head"^^xsd:string,
+        "head"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q25326> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Mollusca"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q28972621> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q11460> ;
+    ns2:prefLabel "Headdress"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q2923673> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Branches"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q3174349> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Astrological"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q321219> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "SeveranDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q3291176> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "AntonineDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q33971> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Leaves"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q34379> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "MusicalInstruments"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q357003> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39546> ;
+    ns2:prefLabel "AnimalRestraints"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q39018> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "Emperor"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q391414> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q12271> ;
+    ns2:prefLabel "ArchitecturalElements"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q39397> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q728> ;
+    ns2:prefLabel "Ax"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q39546> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Tools"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q42295> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Bush"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q4271324> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "MythologicalFigures"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q42889> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "VehicelObjects"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q428995> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q116> ;
+    ns2:prefLabel "Hellenistic"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q467> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Female"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q470596> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "YearofFourEmperors"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q47253> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Worm"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q48981450> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q129167> ;
+    ns2:prefLabel "GordianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q5> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Human"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q5113> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Bird"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q53060> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q12271> ;
+    ns2:prefLabel "Gate"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q538849> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q428995> ;
+    ns2:prefLabel "ArgeadDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q56061392> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q391414> ;
+    ns2:prefLabel "ArchitecturalOrnaments"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q643352> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Grass"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q6501235> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Shellfish"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q705904> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q428995> ;
+    ns2:prefLabel "Seleucides"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q728> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Arms"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q7377> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q729> ;
+    ns2:prefLabel "Mammal"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q766983> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q488383> ;
+    ns2:prefLabel "Vessel-Jar"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q83460> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q5> ;
+    ns2:prefLabel "General"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q8441> a rdfs:Class ;
+    rdfs:subClassOf <http://xmlns.com/foaf/0.1/#term_Person> ;
+    ns2:prefLabel "Male"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q854070> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q39018> ;
+    ns2:prefLabel "TheodosianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q870517> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q116> ;
+    ns2:prefLabel "OdrysianDynasty"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q88208710> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q162244> ;
+    ns2:prefLabel "CityFounder"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q886167> a rdfs:Class ;
+    rdfs:subClassOf <https://www.wikidata.org/wiki/Q756> ;
+    ns2:prefLabel "Flower"^^xsd:string .
+
+ns3:hasAppearance a rdf:Property .
+
+ns3:hasIconography a rdf:Property .
+
+ns3:hasObjectType a rdf:Property .
+
+ns3:hasObverse a rdf:Property .
+
+ns3:hasReverse a rdf:Property .
+
+ns1:description a rdf:Property .
+
+ns1:identifier a rdf:Property .
+
+ns1:publisher a rdf:Property .
+
+ns1:title a rdf:Property .
+
+rdf:li a rdf:Property .
+
+rdf:object a rdf:Property .
+
+rdf:predicate a rdf:Property .
+
+rdf:subject a rdf:Property .
+
+rdf:type a rdf:Property .
+
+rdfs:subClassOf a rdf:Property .
+
+ns2:prefLabel a rdf:Property .
+
+<https://data.corpus-nummorum.eu/api/designs/10> ns3:hasAppearance [ a rdf:Bag ;
+            rdf:li <http://www.dbis.cs.uni-frankfurt.de/cnt/id/anchialos_person>,
+                <https://www.wikidata.org/wiki/Q17489160>,
+                <https://www.wikidata.org/wiki/Q2463628> ] ;
+    ns3:hasIconography [ a rdf:Bag ;
+            rdf:li [ a rdf:Statement ;
+                    rdf:object <https://www.wikidata.org/wiki/Q2463628> ;
+                    rdf:predicate <https://www.wikidata.org/wiki/Q13128864> ;
+                    rdf:subject <http://www.dbis.cs.uni-frankfurt.de/cnt/id/anchialos_person> ] ] ;
+    ns1:description "Brustbild des jugendlichen Anchialos nach rechts mit Taenia und Gewand. Perlkreis."@de,
+        "Bust of youthful Anchialos, right, wearing taenia. Border of dots."@en ;
+    ns1:identifier "design_id=10" ;
+    ns1:publisher "Corpus Nummorum Thracorum" ;
+    ns1:title "CNT Design10" .
+
+<https://data.corpus-nummorum.eu/api/designs/125> ns3:hasAppearance [ a rdf:Bag ;
+            rdf:li <https://www.britishmuseum.org/collection/term/BIOG57049>,
+                <https://www.wikidata.org/wiki/Q10971443>,
+                <https://www.wikidata.org/wiki/Q2102>,
+                <https://www.wikidata.org/wiki/Q23640> ] ;
+    ns3:hasIconography [ a rdf:Bag ;
+            rdf:li [ a rdf:Statement ;
+                    rdf:object <https://www.wikidata.org/wiki/Q2102> ;
+                    rdf:predicate <https://www.wikidata.org/wiki/Q108951109> ;
+                    rdf:subject <https://www.britishmuseum.org/collection/term/BIOG57049> ],
+                [ a rdf:Statement ;
+                    rdf:object <https://www.wikidata.org/wiki/Q10971443> ;
+                    rdf:predicate <https://www.wikidata.org/wiki/Q108951109> ;
+                    rdf:subject <https://www.britishmuseum.org/collection/term/BIOG57049> ] ] ;
+    ns1:description "Asklepios stehend von vorn, Kopf nach links, mit der Rechten sich auf den Schlangenstab stützend, über dem linken Arm Gewand. Perlkreis."@de,
+        "Asclepius standing facing, head left, holding serpent-staff in right hand. Border of dots."@en ;
+    ns1:identifier "design_id=125" ;
+    ns1:publisher "Corpus Nummorum Thracorum" ;
+    ns1:title "CNT Design125" .
+
+<https://www.corpus-nummorum.eu/CN_3941> a ns3:NumismaticObject ;
+    ns3:hasObjectType <http://nomisma.org/id/coin> ;
+    ns3:hasObverse <https://www.corpus-nummorum.eu/CN_3941#obverse> ;
+    ns3:hasReverse <https://www.corpus-nummorum.eu/CN_3941#reverse> ;
+    ns1:identifier "coin_id=3941" .
+
+<https://www.corpus-nummorum.eu/CN_3941#obverse> ns3:hasAppearance <https://www.corpus-nummorum.eu/designs/10> ;
+    ns1:description "Brustbild des jugendlichen Anchialos nach rechts mit Taenia und Gewand. Perlkreis."@de,
+        "Bust of youthful Anchialos, right, wearing taenia. Border of dots."@en .
+
+<https://www.corpus-nummorum.eu/CN_3941#reverse> ns3:hasAppearance <https://www.corpus-nummorum.eu/designs/125> ;
+    ns1:description "Asklepios stehend von vorn, Kopf nach links, mit der Rechten sich auf den Schlangenstab stützend, über dem linken Arm Gewand. Perlkreis."@de,
+        "Asclepius standing facing, head left, holding serpent-staff in right hand. Border of dots."@en .
+
+<https://www.wikidata.org/wiki/Q13128864> ns2:prefLabel "predicate_id=23",
+        "wearing"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q17489160> a <https://www.wikidata.org/wiki/Q179700> ;
+    ns1:identifier "object_id=27" ;
+    ns2:prefLabel "Bust"^^xsd:string .
+
+<http://www.dbis.cs.uni-frankfurt.de/cnt/id/anchialos_person> a <https://www.wikidata.org/wiki/Q162244>,
+        <https://www.wikidata.org/wiki/Q8441>,
+        <https://www.wikidata.org/wiki/Q88208710> ;
+    ns1:identifier "subject_id=4" ;
+    ns2:prefLabel "Anchialos"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q108951109> ns2:prefLabel "holding"^^xsd:string,
+        "predicate_id=1" .
+
+<https://www.wikidata.org/wiki/Q2102> a <https://www.wikidata.org/wiki/Q10811> ;
+    ns1:identifier "object_id=44" ;
+    ns2:prefLabel "serpent"^^xsd:string .
+
+<https://www.wikidata.org/wiki/Q2463628> a <https://www.wikidata.org/wiki/Q18358253> ;
+    ns1:identifier "object_id=143" ;
+    ns2:prefLabel "taenia"^^xsd:string .
+
+<https://www.britishmuseum.org/collection/term/BIOG57049> a <http://www.dbis.cs.uni-frankfurt.de/cnt/id/greek-roman_person>,
+        <http://www.dbis.cs.uni-frankfurt.de/cnt/id/other_subject>,
+        <https://www.wikidata.org/wiki/Q178885>,
+        <https://www.wikidata.org/wiki/Q8441> ;
+    ns1:identifier "subject_id=16" ;
+    ns2:prefLabel "Asclepius"^^xsd:string .
+
